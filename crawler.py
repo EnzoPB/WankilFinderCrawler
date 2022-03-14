@@ -25,17 +25,18 @@ if __name__ == '__main__':
 
         for video in videos:
             video = video['snippet']
-            print(f'video #{video["position"]}')
-
             videoId = video['resourceId']['videoId']
+
+            print(f'Video #{video["position"]}: {videoId} {video["title"]}')
+
             timestamp = datetime.strptime(video['publishedAt'], '%Y-%m-%dT%H:%M:%SZ').timestamp() # on transforme la date ISO8601 en timestamp UNIX
 
-            # on récupère les 10 premiers commentaires
+            # on récupère les 50 premiers commentaires
             topComments = [] # liste contenant ces commenaires
             comments = youtubeAPI('commentThreads', {
                 'part': 'snippet',
                 'textFormat': 'plainText', # on veux les commentaires en texte simple
-                'maxResults': 5, # on veut 5 commentaires
+                'maxResults': 50, # on veut 50 commentaires
                 'order': 'relevance', # on trie par 'relevance' (ordre par defaut)
                 'videoId': videoId # ID de la vidéo
             })['items'] # 'items' correspond à la liste des commentaires
