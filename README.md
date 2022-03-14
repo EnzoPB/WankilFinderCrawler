@@ -12,7 +12,7 @@ Il faut renommer `config.sample.py` en `config.py`, en renseignant `APIKey` avec
 
 Puis il suffit de lancer le script:
 `python3 crawler.py`
-Testé avec Python 3.8.6, mais devrait marcher avec toute versions > 3.
+Testé avec Python 3.10.2, mais devrait marcher avec toute versions > 3.
 Le script prend entre 0.5s et 1.5s par vidéos (actuellement, avec 845 vidéos c'est ~1000 secondes)
 
 ## License
