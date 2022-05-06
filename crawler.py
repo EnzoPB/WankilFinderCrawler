@@ -1,6 +1,7 @@
 from youtube_transcript_api import YouTubeTranscriptApi, _errors as YouTubeTranscriptApiErrors
 from datetime import datetime
 import json
+import re
 
 from database import con, cur # on importe la connexion et le curseur de la base de donnée
 from youtubeAPI import youtubeAPI # on importe la fonction youtubeAPI, qui sert juste à formatter des requêtes à l'API youtube
@@ -82,8 +83,15 @@ if __name__ == '__main__':
             autoCaptionsList = json.dumps(autoCaptionsList)
             topComments = json.dumps(topComments)
 
+            # on extrait le jeu depuis le titre de la vidéo
+            # l'idéal serait de récupérer le jeu détécté par Youtube, mais on ne peut pas y accéder depuis l'API 
+            reg = re.findall('\((.*?)\)', video['title'])
+            game = ''
+            if len(reg) != 0:
+                game = reg[0]
+
             # on créér une nouvelle ligne dans la bdd
-            cur.execute('INSERT INTO videos(id, title, description, timestamp, topComments, autoCaptions, manualCaptions) VALUES(?, ?, ?, ?, ?, ?, ?)',
-                (videoId, video['title'], video['description'], timestamp, topComments, autoCaptionsList, manualCaptionsList))
+            cur.execute('INSERT INTO videos(id, title, description, timestamp, topComments, autoCaptions, manualCaptions, game) VALUES(?, ?, ?, ?, ?, ?, ?, ?)',
+                (videoId, video['title'], video['description'], timestamp, topComments, autoCaptionsList, manualCaptionsList, game))
             con.commit()
 con.close()
